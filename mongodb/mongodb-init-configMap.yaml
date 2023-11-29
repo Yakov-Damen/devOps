@@ -1,0 +1,204 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-init-scripts
+data:
+  init-script.js: |
+    try {
+      db = db.getSiblingDB("admin");
+
+      const data = {
+        categories: [
+          {
+            "name": "Phones",
+            "products": [
+              {
+                "name": "Smartphone Pro X",
+                "description": "A powerful smartphone with advanced features.",
+                "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvjHfbeIKw7uK9rjg1R3kGs7VYsv7U4gkCj8BUc4j7rkL5Zewhnjtd3YuEFdEy",
+                "price": 999.99,
+                "category": "Phones",
+                "tags": {
+                  "brand": "TechMaster",
+                  "material": "Glass",
+                  "color": "Black"
+                },
+                "clickCount": 0,
+                "quantity": 10
+              },
+              {
+                "name": "UltraMobile Galaxy",
+                "description": "Compact and lightweight mobile device.",
+                "imageUrl": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTkOu0WHIVas95ioywS5xHEtI2lJ3Rt9q5V-sOVZg5PhO-9SxUuHP_fudbVT-2Z",
+                "price": 899.99,
+                "category": "Phones",
+                "tags": {
+                  "brand": "InnoTech",
+                  "material": "Aluminum",
+                  "color": "Silver"
+                },
+                "clickCount": 0,
+                "quantity": 10
+              },
+              {
+                "name": "Pixel SuperPhone",
+                "description": "An innovative phone with cutting-edge technology.",
+                "imageUrl": "https://example.com/pixel-superphone.jpg",
+                "price": 1099.99,
+                "category": "Phones",
+                "tags": {
+                  "brand": "PixelTech",
+                  "material": "Plastic",
+                  "color": "Blue"
+                },
+                "clickCount": 0,
+                "quantity": 10
+              },
+              {
+                "name": "Galaxy Mega",
+                "description": "Large screen and powerful performance.",
+                "imageUrl": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSAcZ4SwDo_X0Qb6vwZwBKLpcrDNrVViYaduegUKdmRL65QC6ZpTRu1fNQ1BF9k",
+                "price": 1199.99,
+                "category": "Phones",
+                "tags": {
+                  "brand": "MegaCorp",
+                  "material": "Metal",
+                  "color": "Gold"
+                },
+                "clickCount": 0,
+                "quantity": 10
+              },
+              {
+                "name": "Xperia Elite",
+                "description": "Premium design with exceptional features.",
+                "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThDP6swLovPc1Z83lECTBv28LLe4QT_YSeGXlZsA76atRKhSCTJfDiCVB7fVnB",
+                "price": 899.99,
+                "category": "Phones",
+                "tags": {
+                  "brand": "Xperia",
+                  "material": "Glass",
+                  "color": "White"
+                },
+                "clickCount": 0,
+                "quantity": 10
+              },
+              {
+                "name": "ProPhone 2000",
+                "description": "Professional-grade smartphone for tech enthusiasts.",
+                "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRA1BFjCIpU0HksqJaubfCjkVI2qQ31iUFla0xXQCbRwJ_IFNfKDez8KSAsKYx",
+                "price": 1299.99,
+                "category": "Phones",
+                "tags": {
+                  "brand": "ProTech",
+                  "material": "Aluminum",
+                  "color": "Red"
+                },
+                "clickCount": 0,
+                "quantity": 10
+              },
+              {
+                "name": "Galactic Explorer",
+                "description": "Explore the galaxy with this futuristic device.",
+                "imageUrl": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcR1mOSzmm04bknKjgFNh5sx_LQetUGZ4SPJAreOMU8rO7_lgY16JyaCGGaGP2fC",
+                "price": 999.99,
+                "category": "Phones",
+                "tags": {
+                  "brand": "Galactic",
+                  "material": "Plastic",
+                  "color": "Purple"
+                },
+                "clickCount": 0,
+                "quantity": 10
+              },
+              {
+                "name": "Epic Horizon",
+                "description": "Experience epic adventures with this horizon-expanding phone.",
+                "imageUrl": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSR2-9-mhjQulqHdWxHSyhd7q6oCBjTj76ZMXXBHgaHQQAUm1lhaKO3JAaM5alD",
+                "price": 1199.99,
+                "category": "Phones",
+                "tags": {
+                  "brand": "EpicTech",
+                  "material": "Metal",
+                  "color": "Green"
+                },
+                "clickCount": 0,
+                "quantity": 10
+              },
+              {
+                "name": "Xtreme Mobile X",
+                "description": "Push the limits with this extreme mobile device.",
+                "imageUrl": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRkV4PfaiG4gDI81pybcfuUcn-P8DlaNQYLifkLm4iXrm2LP2cX5v2eoX1GMS4n",
+                "price": 899.99,
+                "category": "Phones",
+                "tags": {
+                  "brand": "Xtreme",
+                  "material": "Plastic",
+                  "color": "Yellow"
+                },
+                "clickCount": 0,
+                "quantity": 10
+              },
+              {
+                "name": "MegaStar 3000",
+                "description": "Reach for the stars with the MegaStar 3000.",
+                "imageUrl": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcT1Fh-XiHwKpa2F_5UUY7c-tc5Z8LPo8L16In5rijAesj4tEHbX7Obg9rhSjAbM",
+                "price": 1499.99,
+                "category": "Phones",
+                "tags": {
+                  "brand": "MegaStar",
+                  "material": "Glass",
+                  "color": "Orange"
+                },
+                "clickCount": 0,
+                "quantity": 10
+              }
+            ]
+          }
+        ]
+      };
+      
+      print(JSON.stringify(data));
+
+      data.categories.forEach(categoryData => {
+
+        const category = {
+          name: categoryData.name,  
+          products: [],
+          clickCount: 0
+        };
+
+        const newCategory = db.categories.insertOne(category);
+        print('New category inserted with _id: ' + newCategory.insertedId);
+
+        categoryData.products.forEach(productData => {
+        
+          var newProduct = db.products.insertOne({
+            name: productData.name,
+            description: productData.description,
+            imageUrl: productData.imageUrl,
+            price: productData.price,
+            category: productData.category,
+            tags: productData.tags,
+            clickCount: productData.clickCount,
+            quantity: productData.quantity
+          });
+          print('New product inserted with _id: ' + newProduct.insertedId);
+
+          category.products.push(newProduct.insertedId);
+
+        });
+
+        db.categories.updateOne(
+          {_id: newCategory.insertedId},  
+          {$set: {products: category.products}}
+        );
+
+      });
+      print('Database seeded successfully.');
+      print(db.getSiblingDB("admin").products.countDocuments());
+      print(db.getSiblingDB("admin").categories.countDocuments());
+    } catch (err) {
+      print('Error while seeding database:');
+      print(err);  
+    }
+  

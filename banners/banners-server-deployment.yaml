@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banners-server-deployment
+  labels:
+    app: banners-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: banners-server
+  template:
+    metadata:
+      labels:
+        app: banners-server
+    spec:
+      containers:
+      - name: banners-server
+        image: eladha123/banners-server:0.0.6
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: banners-config
+        - secretRef:
+            name: banners-secret
+          

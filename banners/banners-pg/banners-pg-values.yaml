@@ -1,0 +1,30 @@
+global:
+  postgresql:
+    auth:
+      username: "elad"
+      password: "password"
+      database: "users"
+
+primary:
+  initdb:
+    scripts:
+      pg-init.sh: |
+        #!/bin/bash
+        echo "Initializing database..."
+        set -e
+        export PGPASSWORD="$POSTGRES_PASSWORD"
+        export PGUSER="$POSTGRES_USER"
+        export PGDATABASE="$POSTGRES_DATABASE"
+
+        psql -v ON_ERROR_STOP=1 <<-EOSQL
+        
+        CREATE TABLE users (
+            id VARCHAR(255) PRIMARY KEY NOT NULL,
+            name VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            isAdmin BOOLEAN NOT NULL
+        );
+
+        EOSQL
+        echo "Database initialized!"

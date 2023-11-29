@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oms-client-deployment
+  labels:
+    app: oms-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oms-client
+  template:
+    metadata:
+      labels:
+        app: oms-client
+    spec:
+      containers:
+      - name: oms-client
+        image: eladha123/oms-client:0.0.7
+        ports:
+        - containerPort: 80
+        volumeMounts:        
+        - name: nginx-client-conf
+          mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: nginx-client-conf
+          configMap: 
+            name: nginx-client-conf

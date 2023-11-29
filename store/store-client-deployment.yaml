@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-client-deployment
+  labels:
+    app: store-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: store-client
+  template:
+    metadata:
+      labels:
+        app: store-client
+    spec:
+      containers:
+      - name: store-client
+        image: yakovda/store-client:0.0.1
+        ports:
+        - containerPort: 80
+        volumeMounts:        
+        - name: nginx-client-conf
+          mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: nginx-client-conf
+          configMap: 
+            name: nginx-client-conf

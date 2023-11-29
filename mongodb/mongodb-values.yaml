@@ -1,0 +1,97 @@
+architecture: replicaset
+auth:
+  enabled: true
+  rootUser: root
+  rootPassword: "password"
+replicaCount: 3
+persistence:
+  size: 1Gi
+arbiter:
+  enabled: false
+
+initdbScripts:
+  init-script.js: |
+    try {
+      db = db.getSiblingDB("admin");
+      
+      const data = {
+        categories: [
+          {
+            "name": "Phones", 
+            "products": [
+              {  
+                "name": "Smartphone Pro X",
+                "description": "A powerful smartphone with advanced features.",
+                "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvjHfbeIKw7uK9rjg1R3kGs7VYsv7U4gkCj8BUc4j7rkL5Zewhnjtd3YuEFdEy",
+                "price": 999.99,
+                "category": "Phones", 
+                "tags": {
+                  "brand": "TechMaster",
+                  "material": "Glass",
+                  "color": "Black"
+                },
+                "clickCount": 0, 
+                "quantity": 10   
+              },
+              {
+                "name": "UltraMobile Galaxy", 
+                "description": "Compact and lightweight mobile device.",
+                "imageUrl": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTkOu0WHIVas95ioywS5xHEtI2lJ3Rt9q5V-sOVZg5PhO-9SxUuHP_fudbVT-2Z",
+                "price": 899.99,
+                "category": "Phones",
+                "tags": {
+                  "brand": "InnoTech",
+                  "material": "Aluminum",
+                  "color": "Silver" 
+                },
+                "clickCount": 0,
+                "quantity": 10    
+              }
+            ]
+          }
+        ]
+      };
+      print(JSON.stringify(data));
+
+      data.categories.forEach(categoryData => {
+
+        const category = {
+          name: categoryData.name,  
+          products: [],
+          clickCount: 0
+        };
+
+        const newCategory = db.categories.insertOne(category);
+        print('New category inserted with _id: ' + newCategory.insertedId);
+
+        categoryData.products.forEach(productData => {
+        
+          var newProduct = db.products.insertOne({
+            name: productData.name,
+            description: productData.description,
+            imageUrl: productData.imageUrl,
+            price: productData.price,
+            category: productData.category,
+            tags: productData.tags,
+            clickCount: productData.clickCount,
+            quantity: productData.quantity
+          });
+          print('New product inserted with _id: ' + newProduct.insertedId);
+
+          category.products.push(newProduct.insertedId);
+
+        });
+
+        db.categories.updateOne(
+          {_id: newCategory.insertedId},  
+          {$set: {products: category.products}}
+        );
+
+      });
+      print('Database seeded successfully.');
+      print(db.getSiblingDB("admin").products.countDocuments());
+      print(db.getSiblingDB("admin").categories.countDocuments());
+    } catch (err) {
+      print('Error while seeding database:');
+      print(err);  
+    }

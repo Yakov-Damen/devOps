@@ -1,0 +1,1 @@
+helm install banners-postgresql bitnami/postgresql --version 13.2.18 -f ./banners-pg-values.yaml

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banners-client-deployment
+  labels:
+    app: banners-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: banners-client
+  template:
+    metadata:
+      labels:
+        app: banners-client
+    spec:
+      containers:
+        - name: banners-client
+          image: eladha123/banners-client:0.1.4
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: nginx-client-conf
+              mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: nginx-client-conf
+          configMap:
+            name: nginx-client-conf

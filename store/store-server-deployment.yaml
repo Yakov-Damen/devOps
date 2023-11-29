@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-server-deployment
+  labels:
+    app: store-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: store-server
+  template:
+    metadata:
+      labels:
+        app: store-server
+    spec:
+      containers:
+      - name: store-server
+        image: yakovda/store-server:0.0.2
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: store-config
+        - secretRef:
+            name: store-secret

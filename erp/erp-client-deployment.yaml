@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: erp-client-deployment
+  labels:
+    app: erp-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: erp-client
+  template:
+    metadata:
+      labels:
+        app: erp-client
+    spec:
+      containers:
+      - name: erp-client
+        image: yakovda/erp-client:0.0.3
+        ports:
+        - containerPort: 80
+        volumeMounts:        
+        - name: nginx-client-conf
+          mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: nginx-client-conf
+          configMap: 
+            name: nginx-client-conf

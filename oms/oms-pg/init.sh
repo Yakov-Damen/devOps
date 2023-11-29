@@ -1,0 +1,1 @@
+helm install oms-postgresql bitnami/postgresql --version 13.2.18 -f ../oms-pg/oms-pg-values.yaml

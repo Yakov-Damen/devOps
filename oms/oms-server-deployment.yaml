@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oms-server-deployment
+  labels:
+    app: oms-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oms-server
+  template:
+    metadata:
+      labels:
+        app: oms-server
+    spec:
+      containers:
+      - name: oms-server
+        image: eladha123/oms-server:0.0.6
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: oms-config
+        - secretRef:
+            name: oms-secret
+          

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: erp-server-deployment
+  labels:
+    app: erp-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: erp-server
+  template:
+    metadata:
+      labels:
+        app: erp-server
+    spec:
+      containers:
+      - name: erp-server
+        image: yakovda/erp-server:0.0.2
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: erp-config
+        - secretRef:
+            name: erp-secret
+          
