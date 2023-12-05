@@ -5,16 +5,10 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  sources:
-  - repoURL: https://charts.bitnami.com/bitnami
-    chart: mongodb
-    helm:
-      valueFiles:
-      - $values/banners-mongo/banners-mongodb-values.yaml
+  source:
   - repoURL: https://github.com/Yakov-Damen/devOps
     path: banners
-    targetRevision: 14.3.1
-    ref: values
+    targetRevision: HADE
   destination:
     server: https://kubernetes.default.svc
     namespace: banner 
