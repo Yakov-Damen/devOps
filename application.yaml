@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-  - repoURL: https://github.com/Yakov-Damen/devOps
+    repoURL: https://github.com/Yakov-Damen/devOps
     path: banners
-    targetRevision: HADE
+    targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
     namespace: banner 
