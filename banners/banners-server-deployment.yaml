@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: banners-server-deployment
+  namespace: banner
   labels:
     app: banners-server
 spec:
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
       - name: banners-server
-        image: eladha123/banners-server:0.0.6
+        image: yakovda/banner-server:1.0.0
         ports:
         - containerPort: 5000
         envFrom:

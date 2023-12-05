@@ -3,7 +3,7 @@ global:
     auth:
       username: "elad"
       password: "password"
-      database: ""
+      database: "store"
 
 primary:
   initdb:
@@ -18,7 +18,49 @@ primary:
 
         psql -v ON_ERROR_STOP=1 <<-EOSQL
         
-        
+        CREATE TABLE
+          IF NOT EXISTS users(
+              userid uuid PRIMARY KEY DEFAULT gen_random_uuid (),
+              name TEXT,
+              email TEXT NOT NULL UNIQUE,
+              password TEXT NOT NULL,
+              created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+              contactNumber NUMERIC,
+              payment TEXT,
+              address JSONB DEFAULT '{"country": "", "city": "", "street":"", "zip_code":""}'
+          );
+          
+        CREATE TABLE IF NOT EXISTS cartitems (
+            userId UUID,
+            productId UUID PRIMARY KEY,
+            quantity NUMERIC,
+            quantityOfProduct NUMERIC,
+            saleprice NUMERIC,
+            name TEXT,
+            description TEXT,
+            discount NUMERIC,
+            image JSONB DEFAULT '{"image": {"url": ""}}',
+            UNIQUE(productId, userId),
+            CONSTRAINT userId
+            FOREIGN KEY(userId)
+            REFERENCES users(userId)
+        );
+
+
+
+
+        CREATE TABLE IF NOT EXISTS reviews(
+            userid UUID NOT NULL, 
+            productid UUID NOT NULL, 
+            author TEXT,
+            title TEXT, 
+            body TEXT, 
+            rating NUMERIC, 
+            thumbUp NUMERIC, 
+            thumbDown NUMERIC,
+            CONSTRAINT userid FOREIGN KEY(userid) REFERENCES users(userid),
+            CONSTRAINT productid FOREIGN KEY(productid) REFERENCES cartitems(productid)
+        );
 
         EOSQL
         echo "Database initialized!"

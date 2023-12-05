@@ -2,7 +2,7 @@ architecture: replicaset
 auth:
   enabled: true
   rootUser: root
-  rootPassword: "password"
+  rootPassword: 'password'
 replicaCount: 3
 persistence:
   size: 1Gi
@@ -14,83 +14,64 @@ initdbScripts:
     try {
       db = db.getSiblingDB("admin");
       
-      const data = {
-        categories: [
-          {
-            "name": "Phones", 
-            "products": [
-              {  
-                "name": "Smartphone Pro X",
-                "description": "A powerful smartphone with advanced features.",
-                "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvjHfbeIKw7uK9rjg1R3kGs7VYsv7U4gkCj8BUc4j7rkL5Zewhnjtd3YuEFdEy",
-                "price": 999.99,
-                "category": "Phones", 
-                "tags": {
-                  "brand": "TechMaster",
-                  "material": "Glass",
-                  "color": "Black"
+      const orderData = {
+              cartItems: [
+                {
+                  productId: "21",
+                  name: "Produc3 1",
+                  description: "Description 1",
+                  salePrice: 50,
+                  quantity: 2,
+                  discount: 0,
+                  image: {
+                    url: "https://example.com/product-image.jpg",
+                  },
                 },
-                "clickCount": 0, 
-                "quantity": 10   
+                {
+                  productId: "32",
+                  name: "Product XYZ",
+                  description: "Description XYZ",
+                  salePrice: 75,
+                  quantity: 3,
+                  discount: 10,
+                  image: {
+                    url: "https://example.com/product-xyz-image.jpg",
+                  },
+                },
+                {
+                  productId: "45",
+                  name: "Special Product",
+                  description: "Special Edition",
+                  salePrice: 120,
+                  quantity: 1,
+                  discount: 5,
+                  image: {
+                    url: "https://example.com/special-product-image.jpg",
+                  },
+                },
+              ],
+            userId: "user21שש1",
+            userName: "John yy",
+            userEmail: "johan.doe@example.com",
+            orderTime: "2023-11-22T12:00:00.000Z",
+            status: "Waiting",
+            totalPrice: 395,
+            shippingDetails: {
+              address: {
+                country: "Israel",
+                city: "Tel Aviv",
+                street: "Main Street",
+                zipCode: 12345,
               },
-              {
-                "name": "UltraMobile Galaxy", 
-                "description": "Compact and lightweight mobile device.",
-                "imageUrl": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTkOu0WHIVas95ioywS5xHEtI2lJ3Rt9q5V-sOVZg5PhO-9SxUuHP_fudbVT-2Z",
-                "price": 899.99,
-                "category": "Phones",
-                "tags": {
-                  "brand": "InnoTech",
-                  "material": "Aluminum",
-                  "color": "Silver" 
-                },
-                "clickCount": 0,
-                "quantity": 10    
-              }
-            ]
-          }
-        ]
-      };
-      print(JSON.stringify(data));
+              contactNumber: "123456789",
+              orderType: "SelfCollection",
+            },
+            contactNumber: "123456789",
+          };
 
-      data.categories.forEach(categoryData => {
-
-        const category = {
-          name: categoryData.name,  
-          products: [],
-          clickCount: 0
-        };
-
-        const newCategory = db.categories.insertOne(category);
-        print('New category inserted with _id: ' + newCategory.insertedId);
-
-        categoryData.products.forEach(productData => {
-        
-          var newProduct = db.products.insertOne({
-            name: productData.name,
-            description: productData.description,
-            imageUrl: productData.imageUrl,
-            price: productData.price,
-            category: productData.category,
-            tags: productData.tags,
-            clickCount: productData.clickCount,
-            quantity: productData.quantity
-          });
-          print('New product inserted with _id: ' + newProduct.insertedId);
-
-          category.products.push(newProduct.insertedId);
-
-        });
-
-        db.categories.updateOne(
-          {_id: newCategory.insertedId},  
-          {$set: {products: category.products}}
-        );
-
-      });
+      db.orders.insertOne(orderData);
       print('Database seeded successfully.');
-      print(db.getSiblingDB("admin").products.countDocuments());
-      print(db.getSiblingDB("admin").categories.countDocuments());
+      print(db.getSiblingDB("admin").orders.countDocuments());
     } catch (err) {
       print('Error while seeding database:');
       print(err);  

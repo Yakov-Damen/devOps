@@ -1,1 +1,1 @@
-helm install erp-postgresql bitnami/postgresql --version 13.2.18 -f ./erp-pg-values.yaml
+helm install -n erp --create-namespace erp-postgresql bitnami/postgresql --version 13.2.18 -f ./erp-pg-values.yaml

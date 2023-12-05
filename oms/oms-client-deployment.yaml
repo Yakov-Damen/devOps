@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: oms-client-deployment
+  namespace: oms
   labels:
     app: oms-client
 spec:
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
       - name: oms-client
-        image: eladha123/oms-client:0.0.7
+        image: yakovda/oms-client:1.0.0
         ports:
         - containerPort: 80
         volumeMounts:        

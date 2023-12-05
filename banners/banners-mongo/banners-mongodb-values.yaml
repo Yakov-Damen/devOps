@@ -2,96 +2,105 @@ architecture: replicaset
 auth:
   enabled: true
   rootUser: root
-  rootPassword: "password"
+  rootPassword: 'password'
 replicaCount: 3
 persistence:
   size: 1Gi
 arbiter:
   enabled: false
 
-# initdbScripts:
-#   init-script.js: |
-    # try {
-    #   db = db.getSiblingDB("admin");
+initdbScripts:
+  init-script.js: |
+    try {
+      db = db.getSiblingDB("admin");
       
-    #   const data = {
-    #     categories: [
-    #       {
-    #         "name": "Phones", 
-    #         "products": [
-    #           {  
-    #             "name": "Smartphone Pro X",
-    #             "description": "A powerful smartphone with advanced features.",
-    #             "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvjHfbeIKw7uK9rjg1R3kGs7VYsv7U4gkCj8BUc4j7rkL5Zewhnjtd3YuEFdEy",
-    #             "price": 999.99,
-    #             "category": "Phones", 
-    #             "tags": {
-    #               "brand": "TechMaster",
-    #               "material": "Glass",
-    #               "color": "Black"
-    #             },
-    #             "clickCount": 0, 
-    #             "quantity": 10   
-    #           },
-    #           {
-    #             "name": "UltraMobile Galaxy", 
-    #             "description": "Compact and lightweight mobile device.",
-    #             "imageUrl": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTkOu0WHIVas95ioywS5xHEtI2lJ3Rt9q5V-sOVZg5PhO-9SxUuHP_fudbVT-2Z",
-    #             "price": 899.99,
-    #             "category": "Phones",
-    #             "tags": {
-    #               "brand": "InnoTech",
-    #               "material": "Aluminum",
-    #               "color": "Silver" 
-    #             },
-    #             "clickCount": 0,
-    #             "quantity": 10    
-    #           }
-    #         ]
-    #       }
-    #     ]
-    #   };
-    #   print(JSON.stringify(data));
+      const banners = [
 
-    #   data.categories.forEach(categoryData => {
+        {
+          productID: "123",
+          catogryName: "456",
+          clickCount: 0,
+          name: "Banner 1",
+          image: {
+            url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7rBbw6FThUHGkWfi5_JGe0NpqN3p2XS2Rhw&usqp=CAU",
+            alt: "Banner 1"
+          },
+          size: "side",
+          kind: ["price"],
+          text: "Special Sale!",
+          createdAt: new Date(),
+          author: "Admin"
+        },
+        {
 
-    #     const category = {
-    #       name: categoryData.name,  
-    #       products: [],
-    #       clickCount: 0
-    #     };
+          productID: "456",
+          catogryName: "789",
+          clickCount: 0,
+          name: "Banner 2",
+          image: {
+            url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4r5PwaOdp97FiCsbmhHThLusqv_vd9kWwRg&usqp=CAU",
+            alt: "Banner 2"
+          },
+          size: "top",
+          kind: ["sale"],
+          text: "Limited Time Offer!",
+          createdAt: new Date(),
+          author: "Admin"
+        },
+        {
 
-    #     const newCategory = db.categories.insertOne(category);
-    #     print('New category inserted with _id: ' + newCategory.insertedId);
+          productID: "789",
+          catogryName: "012",
+          clickCount: 0,
+          name: "Banner 3",
+          image: {
+            url: "https://www.tapet3d.co.il/files/products/product23_image1_2021-03-29_11-25-56.jpg",
+            alt: "Banner 3"
+          },
+          size: "all",
+          kind: ["price", "sale"],
+          text: "New Arrivals!",
+          createdAt: new Date(),
+          author: "Admin"
+        },
+        {
 
-    #     categoryData.products.forEach(productData => {
-        
-    #       var newProduct = db.products.insertOne({
-    #         name: productData.name,
-    #         description: productData.description,
-    #         imageUrl: productData.imageUrl,
-    #         price: productData.price,
-    #         category: productData.category,
-    #         tags: productData.tags,
-    #         clickCount: productData.clickCount,
-    #         quantity: productData.quantity
-    #       });
-    #       print('New product inserted with _id: ' + newProduct.insertedId);
-
-    #       category.products.push(newProduct.insertedId);
-
-    #     });
-
-    #     db.categories.updateOne(
-    #       {_id: newCategory.insertedId},  
-    #       {$set: {products: category.products}}
-    #     );
-
-    #   });
-    #   print('Database seeded successfully.');
-    #   print(db.getSiblingDB("admin").products.countDocuments());
-    #   print(db.getSiblingDB("admin").categories.countDocuments());
-    # } catch (err) {
-    #   print('Error while seeding database:');
-    #   print(err);  
-    # }
+          productID: "012",
+          catogryName: "345",
+          clickCount: 0,
+          name: "Banner 4",
+          image: {
+            url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf5x5SoebRbIFuWZbuivoTVfAign9O9Iee0Q&usqp=CAU",
+            alt: "Banner 4"
+          },
+          size: "side",
+          kind: ["price"],
+          text: "Clearance Sale!",
+          createdAt: new Date(),
+          author: "Admin"
+        },
+        {
+          productID: "345",
+          catogryName: "678",
+          clickCount: 0,
+          name: "Banner 5", 
+          image: {
+            url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZZKsULxS0Tdi9pG2_0--uQ-c46OnV8xaFxw&usqp=CAU",
+            alt: "Banner 5"
+          },
+          size: "top",
+          kind: ["sale"],
+          text: "Flash Sale!",
+          createdAt: new Date(),
+          author: "Admin"
+        }
+      ];
+      const result = db.banners.insertMany(banners);
+      console.log(`${result.length} banners inserted successfully.`);
+      print('Database seeded successfully.');
+      print(db.getSiblingDB("admin").banners.countDocuments());
+    } catch (error) {
+      print('Error while seeding database:');
+      print(err);
+      console.error("Error inserting banners:", error);
+    }

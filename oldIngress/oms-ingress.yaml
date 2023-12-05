@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oms-ingress
+  namespace: oms
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+  - host: ade0a9e8c300f48708e5fcdcf95a35a4-507123613.eu-central-1.elb.amazonaws.com
+    http:
+      paths:
+        - path: /oms/api(/|$)(.*)
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: oms-server-service
+              port:
+                number: 5000
+        - path: /oms(/|$)(.*)
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: oms-client-service
+              port:
+                number: 80

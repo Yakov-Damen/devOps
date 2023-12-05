@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: store-server-deployment
+  namespace: store
   labels:
     app: store-server
 spec:
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
       - name: store-server
-        image: yakovda/store-server:0.0.2
+        image: yakovda/store-server:1.0.2
         ports:
         - containerPort: 5000
         envFrom:

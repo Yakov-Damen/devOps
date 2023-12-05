@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: erp-server-deployment
+  namespace: erp
   labels:
     app: erp-server
 spec:
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
       - name: erp-server
-        image: yakovda/erp-server:0.0.2
+        image: yakovda/erp-server:1.0.0
         ports:
         - containerPort: 5000
         envFrom:

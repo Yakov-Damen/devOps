@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: banners-client-deployment
+  namespace: banner
   labels:
     app: banners-client
 spec:
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
         - name: banners-client
-          image: eladha123/banners-client:0.1.4
+          image: yakovda/banner-client:1.0.1
           ports:
             - containerPort: 80
           volumeMounts:

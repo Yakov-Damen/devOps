@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: oms-server-deployment
+  namespace: oms
   labels:
     app: oms-server
 spec:
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
       - name: oms-server
-        image: eladha123/oms-server:0.0.6
+        image: yakovda/oms-server:1.0.1
         ports:
         - containerPort: 5000
         envFrom:

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: erp-client-deployment
+  namespace: erp
   labels:
     app: erp-client
 spec:
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
       - name: erp-client
-        image: yakovda/erp-client:0.0.3
+        image: yakovda/erp-client:0.0.5
         ports:
         - containerPort: 80
         volumeMounts:        
