@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: banner
+  namespace: argocd
+spec:
+  project: store
+  sources:
+  - chart: mongodb
+    helm:
+      valueFiles:
+      - $values/banners-mongo/banners-mongodb-values.yaml
+
+  - repoURL: https://github.com/Yakov-Damen/devOps
+    path: banners
+    targetRevision: HEAD
+    ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: banner 
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+
+    automated:
+      prune: true
+      selfHeal: true
