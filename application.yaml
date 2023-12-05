@@ -4,16 +4,16 @@ metadata:
   name: banner-app
   namespace: argocd
 spec:
-  project: store
+  project: default
   sources:
-  - chart: mongodb
+  - repoURL: https://charts.bitnami.com/bitnami
+    chart: mongodb
     helm:
       valueFiles:
       - $values/banners-mongo/banners-mongodb-values.yaml
-
   - repoURL: https://github.com/Yakov-Damen/devOps
     path: banners
-    targetRevision: HEAD
+    targetRevision: 14.3.1
     ref: values
   destination:
     server: https://kubernetes.default.svc
