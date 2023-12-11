@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: banners-server
-        image: yakovda/banner-server:1.0.0
+        image: yakovda/banner-server:1.1.0
         ports:
         - containerPort: 5000
         envFrom:
@@ -25,4 +25,10 @@ spec:
             name: banners-config
         - secretRef:
             name: banners-secret
+        volumeMounts:
+        - name: banner-public-storage
+          mountPath: /app/public
+      volumes:
+        - name: banner-public-storage
+          
           

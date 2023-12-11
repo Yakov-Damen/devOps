@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: banners-client
-          image: yakovda/banner-client:1.0.1
+          image: yakovda/banner-client:1.1.0
           ports:
             - containerPort: 80
           volumeMounts:
