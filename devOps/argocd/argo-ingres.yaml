@@ -8,7 +8,7 @@ spec:
     - http:
         paths:
           - path: /argocd
-            pathType: prefix
+            pathType: Exact
             backend:
               service:
                 name: argocd-server
