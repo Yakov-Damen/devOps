@@ -66,3 +66,10 @@ spec:
                 name: store-client-service-external
                 port:
                   number: 80
+          - path: /argocd
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: argocd-server-service-external
+                port:
+                  number: 80
