@@ -11,6 +11,6 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: argocd-server-service-external
+                name: argocd-server
                 port:
                   number: 80
