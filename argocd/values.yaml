@@ -1,0 +1,29 @@
+configs:
+  params:
+    server.basehref: /argocd
+    server.rootPath: 'argocd'
+
+server:
+  ingress:
+    # -- Enable an ingress resource for the Argo CD server
+    enabled: true
+    # -- Additional ingress annotations
+    annotations: {
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true",
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS",
+      nginx.ingress.kubernetes.io/rewrite-target: /$2,
+      nginx.ingress.kubernetes.io/use-regex: 'true'
+
+    }
+    # -- List of ingress hosts
+    ## Argo Ingress.
+    ## Hostnames must be provided if Ingress is enabled.
+    ## Secrets must be manually created in the namespace
+    hosts: 
+      - ade0a9e8c300f48708e5fcdcf95a35a4-507123613.eu-central-1.elb.amazonaws.com
+
+    # -- List of ingress paths
+    paths:
+      - /argocd(/|$)(.*)
+    pathType: ImplementationSpecific
+

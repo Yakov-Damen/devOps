@@ -31,13 +31,13 @@ spec:
                 name: erp-server-service-external
                 port:
                   number: 5000
-          - path: /erp(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: erp-client-service-external
-                port:
-                  number: 80
+          # - path: /erp(/|$)(.*)
+          #   pathType: ImplementationSpecific
+          #   backend:
+          #     service:
+          #       name: erp-client-service-external
+          #       port:
+          #         number: 80
           - path: /oms/api(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
