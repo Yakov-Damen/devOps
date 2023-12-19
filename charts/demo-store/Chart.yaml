@@ -20,10 +20,10 @@ version: 0.1.1
 dependencies:
   - name: postgresql
     version: 13.2.18
-    repository: "@bitnami"
+    repository: "https://charts.bitnami.com/bitnami"
   - name: mongodb
     version: 14.3.1
-    repository: "@bitnami"
+    repository: "https://charts.bitnami.com/bitnami"
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
