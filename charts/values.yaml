@@ -4,13 +4,13 @@ deployment:
   client:
     replicas: 1
     image:
-      repository: yakovda/banner-client
+      repository: eladha123/banners-client
       name: banner-client
       tag: 1.1.0
   server:
     replicas: 1
     image:
-      repository: yakovda/banner-server
+      repository: eladha123/banners-server
       name: banner-server
       tag: 1.1.0
 configmap:
