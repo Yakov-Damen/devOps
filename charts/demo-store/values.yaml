@@ -69,7 +69,7 @@ postgresql:
           echo "Database initialized!"
 mongodb:
   global:
-    namespaceOverride: banner
+    namespaceOverride: helm-test
   fullnameOverride: banner-mongodb
   architecture: replicaset
   auth:
