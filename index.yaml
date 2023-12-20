@@ -3,6 +3,23 @@ entries:
   demo-store:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-12-20T13:03:34.481807478Z"
+    dependencies:
+    - name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.2.18
+    - name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: 14.3.1
+    description: A Helm chart for Kubernetes
+    digest: 4a429cf9df5ca8356b76e7a507fcf195e76d6f13ba1db2a4e110dfe0974815be
+    name: demo-store
+    type: application
+    urls:
+    - https://github.com/Yakov-Damen/devOps/releases/download/demo-store-0.2.1/demo-store-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-12-20T12:55:27.705660675Z"
     dependencies:
     - name: postgresql
@@ -188,4 +205,4 @@ entries:
     urls:
     - https://github.com/Yakov-Damen/devOps/releases/download/demo-store-0.1.1/demo-store-0.1.1.tgz
     version: 0.1.1
-generated: "2023-12-20T12:55:27.705705238Z"
+generated: "2023-12-20T13:03:34.481838422Z"
