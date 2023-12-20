@@ -37,6 +37,7 @@ ingress:
 postgresql:
   fullnameOverride: banner-postgresql
   global:
+    namespaceOverride: banner
     postgresql:
       auth:
         username: elad
@@ -68,6 +69,8 @@ postgresql:
           EOSQL
           echo "Database initialized!"
 mongodb:
+  global:
+    namespaceOverride: banner
   fullnameOverride: banner-mongodb
   architecture: replicaset
   auth:
