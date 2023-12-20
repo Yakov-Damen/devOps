@@ -6,13 +6,13 @@ deployment:
     image:
       repository: eladha123/banners-client
       name: banner-client
-      tag: 1.0.2
+      tag: 1.1.0
   server:
     replicas: 1
     image:
       repository: eladha123/banners-server
       name: banner-server
-      tag: 1.0.2
+      tag: 1.1.0
 configmap:
   data:
     conf: |
@@ -34,15 +34,16 @@ ingress:
   server:
     path: /banner/api(/|$)(.*)
     pathType: ImplementationSpecific
+            
 postgresql:
   fullnameOverride: banner-postgresql
   global:
-    namespaceOverride: banner
     postgresql:
       auth:
-        username: elad
-        password: password
-        database: users
+        username: "elad"
+        password: "password"
+        database: "users"
+
   primary:
     persistence:
       size: 1Gi
@@ -57,7 +58,7 @@ postgresql:
           export PGDATABASE="$POSTGRES_DATABASE"
 
           psql -v ON_ERROR_STOP=1 <<-EOSQL
-
+          
           CREATE TABLE users (
               id VARCHAR(255) PRIMARY KEY NOT NULL,
               name VARCHAR(255) NOT NULL,
@@ -76,11 +77,105 @@ mongodb:
   auth:
     enabled: true
     rootUser: root
-    rootPassword: password
+    rootPassword: 'password'
   replicaCount: 3
   persistence:
     size: 1Gi
   arbiter:
     enabled: false
+
   initdbScripts:
-    init-script.js: "try {\n  db = db.getSiblingDB(\"admin\");\n  \n  const banners = [\n\n    {\n      productID: \"123\",\n      catogryName: \"456\",\n      clickCount: 0,\n      name: \"Banner 1\",\n      image: {\n        url: \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7rBbw6FThUHGkWfi5_JGe0NpqN3p2XS2Rhw&usqp=CAU\",\n        alt: \"Banner 1\"\n      },\n      size: \"side\",\n      kind: [\"price\"],\n      text: \"Special Sale!\",\n      createdAt: new Date(),\n      author: \"Admin\"\n    },\n    {\n\n      productID: \"456\",\n      catogryName: \"789\",\n      clickCount: 0,\n      name: \"Banner 2\",\n      image: {\n        url: \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4r5PwaOdp97FiCsbmhHThLusqv_vd9kWwRg&usqp=CAU\",\n        alt: \"Banner 2\"\n      },\n      size: \"top\",\n      kind: [\"sale\"],\n      text: \"Limited Time Offer!\",\n      createdAt: new Date(),\n      author: \"Admin\"\n    },\n    {\n\n      productID: \"789\",\n      catogryName: \"012\",\n      clickCount: 0,\n      name: \"Banner 3\",\n      image: {\n        url: \"https://www.tapet3d.co.il/files/products/product23_image1_2021-03-29_11-25-56.jpg\",\n        alt: \"Banner 3\"\n      },\n      size: \"all\",\n      kind: [\"price\", \"sale\"],\n      text: \"New Arrivals!\",\n      createdAt: new Date(),\n      author: \"Admin\"\n    },\n    {\n\n      productID: \"012\",\n      catogryName: \"345\",\n      clickCount: 0,\n      name: \"Banner 4\",\n      image: {\n        url: \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf5x5SoebRbIFuWZbuivoTVfAign9O9Iee0Q&usqp=CAU\",\n        alt: \"Banner 4\"\n      },\n      size: \"side\",\n      kind: [\"price\"],\n      text: \"Clearance Sale!\",\n      createdAt: new Date(),\n      author: \"Admin\"\n    },\n    {\n      productID: \"345\",\n      catogryName: \"678\",\n      clickCount: 0,\n      name: \"Banner 5\", \n      image: {\n        url: \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZZKsULxS0Tdi9pG2_0--uQ-c46OnV8xaFxw&usqp=CAU\",\n        alt: \"Banner 5\"\n      },\n      size: \"top\",\n      kind: [\"sale\"],\n      text: \"Flash Sale!\",\n      createdAt: new Date(),\n      author: \"Admin\"\n    }\n  ];\n  const result = db.banners.insertMany(banners);\n  console.log(`${result.length} banners inserted successfully.`);\n  print('Database seeded successfully.');\n  print(db.getSiblingDB(\"admin\").banners.countDocuments());\n} catch (error) {\n  print('Error while seeding database:');\n  print(err);\n  console.error(\"Error inserting banners:\", error);\n}\n"
+    init-script.js: |
+      try {
+        db = db.getSiblingDB("admin");
+        
+        const banners = [
+
+          {
+            productID: "123",
+            catogryName: "456",
+            clickCount: 0,
+            name: "Banner 1",
+            image: {
+              url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7rBbw6FThUHGkWfi5_JGe0NpqN3p2XS2Rhw&usqp=CAU",
+              alt: "Banner 1"
+            },
+            size: "side",
+            kind: ["price"],
+            text: "Special Sale!",
+            createdAt: new Date(),
+            author: "Admin"
+          },
+          {
+
+            productID: "456",
+            catogryName: "789",
+            clickCount: 0,
+            name: "Banner 2",
+            image: {
+              url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4r5PwaOdp97FiCsbmhHThLusqv_vd9kWwRg&usqp=CAU",
+              alt: "Banner 2"
+            },
+            size: "top",
+            kind: ["sale"],
+            text: "Limited Time Offer!",
+            createdAt: new Date(),
+            author: "Admin"
+          },
+          {
+
+            productID: "789",
+            catogryName: "012",
+            clickCount: 0,
+            name: "Banner 3",
+            image: {
+              url: "https://www.tapet3d.co.il/files/products/product23_image1_2021-03-29_11-25-56.jpg",
+              alt: "Banner 3"
+            },
+            size: "all",
+            kind: ["price", "sale"],
+            text: "New Arrivals!",
+            createdAt: new Date(),
+            author: "Admin"
+          },
+          {
+
+            productID: "012",
+            catogryName: "345",
+            clickCount: 0,
+            name: "Banner 4",
+            image: {
+              url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf5x5SoebRbIFuWZbuivoTVfAign9O9Iee0Q&usqp=CAU",
+              alt: "Banner 4"
+            },
+            size: "side",
+            kind: ["price"],
+            text: "Clearance Sale!",
+            createdAt: new Date(),
+            author: "Admin"
+          },
+          {
+            productID: "345",
+            catogryName: "678",
+            clickCount: 0,
+            name: "Banner 5", 
+            image: {
+              url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZZKsULxS0Tdi9pG2_0--uQ-c46OnV8xaFxw&usqp=CAU",
+              alt: "Banner 5"
+            },
+            size: "top",
+            kind: ["sale"],
+            text: "Flash Sale!",
+            createdAt: new Date(),
+            author: "Admin"
+          }
+        ];
+        const result = db.banners.insertMany(banners);
+        console.log(`${result.length} banners inserted successfully.`);
+        print('Database seeded successfully.');
+        print(db.getSiblingDB("admin").banners.countDocuments());
+      } catch (error) {
+        print('Error while seeding database:');
+        print(err);
+        console.error("Error inserting banners:", error);
+      }
