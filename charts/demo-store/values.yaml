@@ -6,13 +6,13 @@ deployment:
     image:
       repository: eladha123/banners-client
       name: banner-client
-      tag: 1.0.8
+      tag: 1.0.9
   server:
     replicas: 1
     image:
       repository: eladha123/banners-server
       name: banner-server
-      tag: 1.0.8
+      tag: 1.0.9
 configmap:
   data:
     conf: |
