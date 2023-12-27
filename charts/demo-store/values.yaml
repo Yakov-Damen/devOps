@@ -14,22 +14,6 @@ deployment:
       repository: eladha123/banners-server
       name: banner-server
       tag: 1.0.9
-configmap:
-  data:
-    default.conf: |
-      "server {
-            listen 80;
-            location / {
-              sub_filter_once on;
-              sub_filter "URL_PLACEHOLDER" ${API_URL};
-              root /usr/share/nginx/html;
-              try_files $uri $uri/ /index.html;
-            }
-            location /assets/ {
-              root /usr/share/nginx/html;
-              try_files $uri $uri/ =404;
-            }
-      }"
 ingress:
   client:
     path: /banner(/|$)(.*)
