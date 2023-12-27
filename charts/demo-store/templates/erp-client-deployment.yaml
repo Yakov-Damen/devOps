@@ -22,7 +22,7 @@ spec:
         - containerPort: 80
         volumeMounts:        
         - name: nginx-conf
-          mountPath: /etc/nginx/conf.d
+          mountPath: /etc/nginx/templates
       volumes:
         - name: nginx-conf
           configMap: 
