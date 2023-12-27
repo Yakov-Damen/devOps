@@ -5,4 +5,3 @@ metadata:
   namespace: {{.Values.namespace}}
 data:
     NODE_ENV: "production"
-    BASE_URL: {{.Values.base_url}}
