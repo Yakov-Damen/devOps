@@ -1,4 +1,4 @@
-namespace: default
+namespace: banner
 name: banner
 base_url: ''
 deployment:
@@ -23,6 +23,7 @@ ingress:
     pathType: ImplementationSpecific
 postgresql:
   fullnameOverride: banner-postgresql
+  namespaceOverride: banner
   global:
     postgresql:
       auth:
@@ -55,6 +56,8 @@ postgresql:
           EOSQL
           echo "Database initialized!"
 mongodb:
+  global:
+    namespaceOverride: banner
   fullnameOverride: banner-mongodb
   architecture: replicaset
   auth:
