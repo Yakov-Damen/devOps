@@ -7,4 +7,25 @@ dependencies:
 - name: mongodb
   version: 14.3.1
   repository: https://charts.bitnami.com/bitnami
+  alias: banner-mongodb
+- name: mongodb
+  version: 14.3.1
+  repository: https://charts.bitnami.com/bitnami
+  alias: oms-mongodb
+- name: postgresql
+  version: 13.2.18
+  alias: banner-postgresql
+- name: postgresql
+  version: 13.2.18
+  alias: erp-postgresql
+- name: postgresql
+  version: 13.2.18
+  alias: store-postgresql
+- name: postgresql
+  version: 13.2.18
+  alias: oms-postgresql
+- name: banner
+- name: oms
+- name: erp
+- name: store
 appVersion: 1.16.0

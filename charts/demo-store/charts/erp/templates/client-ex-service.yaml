@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.name}}-client-service-external
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: {{.Values.name}}-client-service.{{.Values.namespace}}.svc.cluster.local
+  ports:
+    - port: 80

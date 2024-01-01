@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.name}}-client-deployment
+  namespace: {{.Values.namespace}}
+  labels:
+    app: {{.Values.name}}-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{.Values.name}}-client
+  template:
+    metadata:
+      labels:
+        app: {{.Values.name}}-client
+    spec:
+      containers:
+      - name: {{.Values.name}}-client
+        image: "{{.Values.client.image.repository}}:{{.Values.client.image.tag}}"
+        ports:
+        - containerPort: 80
+        volumeMounts:        
+        - name: nginx-conf
+          mountPath: /etc/nginx/templates
+      volumes:
+        - name: nginx-conf
+          configMap: 
+            name: {{.Values.name}}-client-configmap

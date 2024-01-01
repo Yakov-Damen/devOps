@@ -1,9 +1,8 @@
-namespace: banner
-name: banner
-base_url: ''
-deployment:
+banner:
+  namespace: banner
+  name: banner
+  base_url: 'http://34.42.117.221/banner/api'
   client:
-    replicas: 1
     image:
       repository: yakovda/banner-client
       name: banner-client
@@ -14,14 +13,59 @@ deployment:
       repository: eladha123/banners-server
       name: banner-server
       tag: 1.0.9
-ingress:
+ 
+oms:
+  namespace: oms
+  name: oms
+  base_url: 'http://34.42.117.221/oms/api'
   client:
-    path: /banner(/|$)(.*)
-    pathType: ImplementationSpecific
+    image:
+      repository: yakovda/oms-client
+      name: oms-client
+      tag: 1.1.0
   server:
-    path: /banner/api(/|$)(.*)
-    pathType: ImplementationSpecific
-postgresql:
+    replicas: 1
+    image:
+      repository: yakovda/oms-server
+      name: oms-server
+      tag: 1.0.1
+
+store:
+  namespace: store
+  name: store
+  base_url: 'http://34.42.117.221/store/api'
+  client:
+    image:
+      repository: yakovda/store-client
+      name: store-client
+      tag: 1.1.0
+  server:
+    replicas: 1
+    image:
+      repository: yakovda/store-server
+      name: store-server
+      tag: 1.1.0
+
+erp:
+  namespace: erp
+  name: erp
+  base_url: 'http://34.42.117.221/erp/api'
+
+  client:
+    replicas: 1
+    image:
+      repository: eladha123/erp-client
+      name: erp-client
+      tag: 0.0.4
+
+  server:
+    replicas: 1
+    image:
+      repository: eladha123/erp-server
+      name: erp-server
+      tag: 0.0.4
+
+banner-postgresql:
   fullnameOverride: banner-postgresql
   namespaceOverride: banner
   global:
@@ -55,7 +99,123 @@ postgresql:
 
           EOSQL
           echo "Database initialized!"
-mongodb:
+oms-postgresql:
+  fullnameOverride: oms-postgresql
+  namespaceOverride: oms
+  global:
+    postgresql:
+      auth:
+        username: "elad"
+        password: "password"
+        database: "projoms"
+  primary:
+    persistence:
+      size: 1Gi
+    initdb:
+      scripts:
+        pg-init.sh: |
+          #!/bin/bash
+          echo "Initializing database..."
+          set -e
+          export PGPASSWORD="$POSTGRES_PASSWORD"
+          export PGUSER="$POSTGRES_USER"
+          export PGDATABASE="$POSTGRES_DATABASE"
+
+          psql -v ON_ERROR_STOP=1 <<-EOSQL
+
+              CREATE TABLE IF NOT EXISTS admin_users (
+                  user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                  first_name VARCHAR(50) NOT NULL,
+                  last_name VARCHAR(50) NOT NULL,
+                  email VARCHAR(100) UNIQUE NOT NULL,
+                  password VARCHAR(255) NOT NULL,
+                  is_admin BOOLEAN,
+                  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+              );
+          EOSQL
+          echo "Database initialized!"
+erp-postgresql:
+  fullnameOverride: erp-postgresql
+  namespaceOverride: erp
+  global:
+    postgresql:
+      auth:
+        username: "elad"
+        password: "password"
+        database: "erp"
+  primary:
+    persistence:
+      size: 1Gi
+store-postgresql:
+  fullnameOverride: store-postgresql
+  namespaceOverride: store
+  global:
+    postgresql:
+      auth:
+        username: "elad"
+        password: "password"
+        database: "store"
+
+  primary:
+    initdb:
+      scripts:
+        pg-init.sh: |
+          #!/bin/bash
+          echo "Initializing database..."
+          set -e
+          export PGPASSWORD="$POSTGRES_PASSWORD"
+          export PGUSER="$POSTGRES_USER"
+          export PGDATABASE="$POSTGRES_DATABASE"
+
+          psql -v ON_ERROR_STOP=1 <<-EOSQL
+          
+          CREATE TABLE
+            IF NOT EXISTS users(
+                userid uuid PRIMARY KEY DEFAULT gen_random_uuid (),
+                name TEXT,
+                email TEXT NOT NULL UNIQUE,
+                password TEXT NOT NULL,
+                created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+                contactNumber NUMERIC,
+                payment TEXT,
+                address JSONB DEFAULT '{"country": "", "city": "", "street":"", "zip_code":""}'
+            );
+            
+          CREATE TABLE IF NOT EXISTS cartitems (
+              userId UUID,
+              productId UUID PRIMARY KEY,
+              quantity NUMERIC,
+              quantityOfProduct NUMERIC,
+              saleprice NUMERIC,
+              name TEXT,
+              description TEXT,
+              discount NUMERIC,
+              image JSONB DEFAULT '{"image": {"url": ""}}',
+              UNIQUE(productId, userId),
+              CONSTRAINT userId
+              FOREIGN KEY(userId)
+              REFERENCES users(userId)
+          );
+
+
+
+
+          CREATE TABLE IF NOT EXISTS reviews(
+              userid UUID NOT NULL, 
+              productid UUID NOT NULL, 
+              author TEXT,
+              title TEXT, 
+              body TEXT, 
+              rating NUMERIC, 
+              thumbUp NUMERIC, 
+              thumbDown NUMERIC,
+              CONSTRAINT userid FOREIGN KEY(userid) REFERENCES users(userid),
+              CONSTRAINT productid FOREIGN KEY(productid) REFERENCES cartitems(productid)
+          );
+
+          EOSQL
+          echo "Database initialized!"
+banner-mongodb:
   global:
     namespaceOverride: banner
   fullnameOverride: banner-mongodb
@@ -71,93 +231,175 @@ mongodb:
     enabled: false
   initdbScripts:
     init-script.js: |
-     "try {
+      "try {
+          db = db.getSiblingDB("admin");
+
+          const banners = [
+            {
+              productID: "123",
+              catogryName: "456",
+              clickCount: 0,
+              name: "Banner 1",
+              image: {
+                url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7rBbw6FThUHGkWfi5_JGe0NpqN3p2XS2Rhw&usqp=CAU",
+                alt: "Banner 1",
+              },
+              size: "side",
+              kind: ["price"],
+              text: "Special Sale!",
+              createdAt: new Date(),
+              author: "Admin",
+            },
+            {
+              productID: "456",
+              catogryName: "789",
+              clickCount: 0,
+              name: "Banner 2",
+              image: {
+                url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4r5PwaOdp97FiCsbmhHThLusqv_vd9kWwRg&usqp=CAU",
+                alt: "Banner 2",
+              },
+              size: "top",
+              kind: ["sale"],
+              text: "Limited Time Offer!",
+              createdAt: new Date(),
+              author: "Admin",
+            },
+            {
+              productID: "789",
+              catogryName: "012",
+              clickCount: 0,
+              name: "Banner 3",
+              image: {
+                url: "https://www.tapet3d.co.il/files/products/product23_image1_2021-03-29_11-25-56.jpg",
+                alt: "Banner 3",
+              },
+              size: "all",
+              kind: ["price", "sale"],
+              text: "New Arrivals!",
+              createdAt: new Date(),
+              author: "Admin",
+            },
+            {
+              productID: "012",
+              catogryName: "345",
+              clickCount: 0,
+              name: "Banner 4",
+              image: {
+                url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf5x5SoebRbIFuWZbuivoTVfAign9O9Iee0Q&usqp=CAU",
+                alt: "Banner 4",
+              },
+              size: "side",
+              kind: ["price"],
+              text: "Clearance Sale!",
+              createdAt: new Date(),
+              author: "Admin",
+            },
+            {
+              productID: "345",
+              catogryName: "678",
+              clickCount: 0,
+              name: "Banner 5",
+              image: {
+                url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZZKsULxS0Tdi9pG2_0--uQ-c46OnV8xaFxw&usqp=CAU",
+                alt: "Banner 5",
+              },
+              size: "top",
+              kind: ["sale"],
+              text: "Flash Sale!",
+              createdAt: new Date(),
+              author: "Admin",
+            },
+          ];
+
+          const result = db.banners.insertMany(banners);
+          console.log(`${result.length} banners inserted successfully.`);
+          print('Database seeded successfully.');
+          print(db.getSiblingDB("admin").banners.countDocuments());
+        } catch (error) {
+          print('Error while seeding database:');
+          print(error);
+          console.error("Error inserting banners:", error);
+        }"
+oms-mongodb:
+  global:
+    namespaceOverride: oms
+  fullnameOverride: oms-mongodb
+  architecture: replicaset
+  auth:
+    enabled: true
+    rootUser: root
+    rootPassword: 'password'
+  replicaCount: 3
+  persistence:
+    size: 1Gi
+  arbiter:
+    enabled: false
+
+  initdbScripts:
+    init-script.js: |
+      try {
         db = db.getSiblingDB("admin");
+        
+        const orderData = {
+                cartItems: [
+                  {
+                    productId: "21",
+                    name: "Produc3 1",
+                    description: "Description 1",
+                    salePrice: 50,
+                    quantity: 2,
+                    discount: 0,
+                    image: {
+                      url: "https://example.com/product-image.jpg",
+                    },
+                  },
+                  {
+                    productId: "32",
+                    name: "Product XYZ",
+                    description: "Description XYZ",
+                    salePrice: 75,
+                    quantity: 3,
+                    discount: 10,
+                    image: {
+                      url: "https://example.com/product-xyz-image.jpg",
+                    },
+                  },
+                  {
+                    productId: "45",
+                    name: "Special Product",
+                    description: "Special Edition",
+                    salePrice: 120,
+                    quantity: 1,
+                    discount: 5,
+                    image: {
+                      url: "https://example.com/special-product-image.jpg",
+                    },
+                  },
+                ],
+              userId: "user21שש1",
+              userName: "John yy",
+              userEmail: "johan.doe@example.com",
+              orderTime: "2023-11-22T12:00:00.000Z",
+              status: "Waiting",
+              totalPrice: 395,
+              shippingDetails: {
+                address: {
+                  country: "Israel",
+                  city: "Tel Aviv",
+                  street: "Main Street",
+                  zipCode: 12345,
+                },
+                contactNumber: "123456789",
+                orderType: "SelfCollection",
+              },
+              contactNumber: "123456789",
+            };
 
-        const banners = [
-          {
-            productID: "123",
-            catogryName: "456",
-            clickCount: 0,
-            name: "Banner 1",
-            image: {
-              url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7rBbw6FThUHGkWfi5_JGe0NpqN3p2XS2Rhw&usqp=CAU",
-              alt: "Banner 1",
-            },
-            size: "side",
-            kind: ["price"],
-            text: "Special Sale!",
-            createdAt: new Date(),
-            author: "Admin",
-          },
-          {
-            productID: "456",
-            catogryName: "789",
-            clickCount: 0,
-            name: "Banner 2",
-            image: {
-              url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4r5PwaOdp97FiCsbmhHThLusqv_vd9kWwRg&usqp=CAU",
-              alt: "Banner 2",
-            },
-            size: "top",
-            kind: ["sale"],
-            text: "Limited Time Offer!",
-            createdAt: new Date(),
-            author: "Admin",
-          },
-          {
-            productID: "789",
-            catogryName: "012",
-            clickCount: 0,
-            name: "Banner 3",
-            image: {
-              url: "https://www.tapet3d.co.il/files/products/product23_image1_2021-03-29_11-25-56.jpg",
-              alt: "Banner 3",
-            },
-            size: "all",
-            kind: ["price", "sale"],
-            text: "New Arrivals!",
-            createdAt: new Date(),
-            author: "Admin",
-          },
-          {
-            productID: "012",
-            catogryName: "345",
-            clickCount: 0,
-            name: "Banner 4",
-            image: {
-              url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf5x5SoebRbIFuWZbuivoTVfAign9O9Iee0Q&usqp=CAU",
-              alt: "Banner 4",
-            },
-            size: "side",
-            kind: ["price"],
-            text: "Clearance Sale!",
-            createdAt: new Date(),
-            author: "Admin",
-          },
-          {
-            productID: "345",
-            catogryName: "678",
-            clickCount: 0,
-            name: "Banner 5",
-            image: {
-              url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZZKsULxS0Tdi9pG2_0--uQ-c46OnV8xaFxw&usqp=CAU",
-              alt: "Banner 5",
-            },
-            size: "top",
-            kind: ["sale"],
-            text: "Flash Sale!",
-            createdAt: new Date(),
-            author: "Admin",
-          },
-        ];
-
-        const result = db.banners.insertMany(banners);
-        console.log(`${result.length} banners inserted successfully.`);
+        db.orders.insertOne(orderData);
         print('Database seeded successfully.');
-        print(db.getSiblingDB("admin").banners.countDocuments());
-      } catch (error) {
+        print(db.getSiblingDB("admin").orders.countDocuments());
+      } catch (err) {
         print('Error while seeding database:');
-        print(error);
-        console.error("Error inserting banners:", error);
-      }"
+        print(err);  
+      }

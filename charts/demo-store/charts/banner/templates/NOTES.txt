@@ -1,0 +1,3 @@
+Thank you for installing our Helm chart!
+Remember to delete the deployment once you're done testing it with:
+helm delete --purge {{ .Release.Name }}

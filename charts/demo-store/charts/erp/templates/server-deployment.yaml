@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.name}}-server-deployment
+  namespace: {{.Values.namespace}}
+  labels:
+    app: {{.Values.name}}-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{.Values.name}}-server
+  template:
+    metadata:
+      labels:
+        app: {{.Values.name}}-server
+    spec:
+      containers:
+      - name: {{.Values.name}}-server
+        image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: {{.Values.name}}-config
+        - secretRef:
+            name: {{.Values.name}}-secret
