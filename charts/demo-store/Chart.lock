@@ -14,5 +14,20 @@ dependencies:
 - name: postgresql
   repository: ""
   version: 13.2.18
-digest: sha256:13710b67f65785d9231e4cdb2fb8872d91e9ed2e66577bde855cbb1cf281750d
-generated: "2023-12-28T12:06:54.778103928+02:00"
+- name: postgresql
+  repository: ""
+  version: 13.2.18
+- name: banner
+  repository: ""
+  version: 0.1.0
+- name: oms
+  repository: ""
+  version: 0.1.0
+- name: erp
+  repository: ""
+  version: 0.1.0
+- name: store
+  repository: ""
+  version: 0.1.0
+digest: sha256:a990980901f26667f667b4e6b796c97332a69a10d1fddba95f1654d9271db48c
+generated: "2024-01-02T09:44:35.272649754+02:00"
