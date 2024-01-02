@@ -38,7 +38,7 @@ store:
     image:
       repository: yakovda/store-client
       name: store-client
-      tag: 1.1.0
+      tag: 1.1.1
   server:
     replicas: 1
     image:
