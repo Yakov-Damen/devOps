@@ -154,7 +154,7 @@ store-postgresql:
       auth:
         username: "elad"
         password: "password"
-        database: "store"
+        database: "users"
 
   primary:
     initdb:
