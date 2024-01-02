@@ -3,6 +3,53 @@ entries:
   demo-store:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-01-02T07:51:04.989603902Z"
+    dependencies:
+    - alias: banner-mongodb
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: 14.3.1
+    - alias: oms-mongodb
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: 14.3.1
+    - alias: banner-postgresql
+      name: postgresql
+      repository: ""
+      version: 13.2.18
+    - alias: erp-postgresql
+      name: postgresql
+      repository: ""
+      version: 13.2.18
+    - alias: store-postgresql
+      name: postgresql
+      repository: ""
+      version: 13.2.18
+    - alias: oms-postgresql
+      name: postgresql
+      repository: ""
+      version: 13.2.18
+    - name: banner
+      repository: ""
+      version: 0.1.0
+    - name: oms
+      repository: ""
+      version: 0.1.0
+    - name: erp
+      repository: ""
+      version: 0.1.0
+    - name: store
+      repository: ""
+      version: 0.1.0
+    description: A Helm chart for Kubernetes
+    digest: 2136ae16e813da66ed4173941aff621510c7161cb31658f6fc1c941e9eae5eb1
+    name: demo-store
+    type: application
+    urls:
+    - https://github.com/Yakov-Damen/devOps/releases/download/demo-store-0.3.6/demo-store-0.3.6.tgz
+    version: 0.3.6
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-12-28T09:33:32.831133781Z"
     dependencies:
     - name: mongodb
@@ -423,4 +470,4 @@ entries:
     urls:
     - https://github.com/Yakov-Damen/devOps/releases/download/demo-store-0.1.1/demo-store-0.1.1.tgz
     version: 0.1.1
-generated: "2023-12-28T09:33:32.831470258Z"
+generated: "2024-01-02T07:51:04.989769961Z"
