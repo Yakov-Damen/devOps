@@ -9,7 +9,7 @@ data:
         listen 80;
         location / {
         sub_filter_once on;
-        sub_filter "URL_PLACEHOLDER" {{.Values.base_url}};
+        sub_filter "URL_PLACEHOLDER" {{.Values.global.base_url}}/oms/api;
           root /usr/share/nginx/html;
           try_files $uri $uri/ /index.html;
         }
