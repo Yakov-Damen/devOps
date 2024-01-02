@@ -1,7 +1,7 @@
 banner:
   namespace: banner
   name: banner
-  base_url: 'http://34.42.117.221/banner/api'
+  base_url: 'http://34.18.19.13/banner/api'
   client:
     image:
       repository: yakovda/banner-client
@@ -17,7 +17,7 @@ banner:
 oms:
   namespace: oms
   name: oms
-  base_url: 'http://34.42.117.221/oms/api'
+  base_url: 'http://34.18.19.13/oms/api'
   client:
     image:
       repository: yakovda/oms-client
@@ -33,7 +33,7 @@ oms:
 store:
   namespace: store
   name: store
-  base_url: 'http://34.42.117.221/store/api'
+  base_url: 'http://34.18.19.13/store/api'
   client:
     image:
       repository: yakovda/store-client
@@ -49,7 +49,7 @@ store:
 erp:
   namespace: erp
   name: erp
-  base_url: 'http://34.42.117.221/erp/api'
+  base_url: 'http://34.18.19.13/erp/api'
 
   client:
     replicas: 1
@@ -107,7 +107,7 @@ oms-postgresql:
       auth:
         username: "elad"
         password: "password"
-        database: "projoms"
+        database: "users"
   primary:
     persistence:
       size: 1Gi

@@ -1,4 +1,4 @@
-postgresql:
+erp-postgresql:
   primary:
     initdb:
       scripts:
