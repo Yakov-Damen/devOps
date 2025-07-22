@@ -1,0 +1,249 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-k8s"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 1 }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Peak CPU (cores)" },
+            "properties": [
+              { "id": "unit", "value": "cores" },
+              { "id": "decimals", "value": 2 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Recommended CPU Requests (cores)" },
+            "properties": [
+              { "id": "unit", "value": "cores" },
+              { "id": "decimals", "value": 2 },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  { "options": { "1": { "color": "red", "index": 0 } }, "type": "value" }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Recommended CPU Limits (cores)" },
+            "properties": [
+              { "id": "unit", "value": "cores" },
+              { "id": "decimals", "value": 2 },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  { "options": { "1": { "color": "red", "index": 0 } }, "type": "value" }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Actual CPU Requests (cores)" },
+            "properties": [
+              { "id": "unit", "value": "cores" },
+              { "id": "decimals", "value": 2 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Actual CPU Limits (cores)" },
+            "properties": [
+              { "id": "unit", "value": "cores" },
+              { "id": "decimals", "value": 2 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Peak Memory (bytes)" },
+            "properties": [
+              { "id": "unit", "value": "bytes" },
+              { "id": "decimals", "value": 2 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Recommended Memory Requests (bytes)" },
+            "properties": [
+              { "id": "unit", "value": "bytes" },
+              { "id": "decimals", "value": 2 },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  { "options": { "1": { "color": "red", "index": 0 } }, "type": "value" }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Recommended Memory Limits (bytes)" },
+            "properties": [
+              { "id": "unit", "value": "bytes" },
+              { "id": "decimals", "value": 2 },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  { "options": { "1": { "color": "red", "index": 0 } }, "type": "value" }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Actual Memory Requests (bytes)" },
+            "properties": [
+              { "id": "unit", "value": "bytes" },
+              { "id": "decimals", "value": 2 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Actual Memory Limits (bytes)" },
+            "properties": [
+              { "id": "unit", "value": "bytes" },
+              { "id": "decimals", "value": 2 }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "options": {
+        "showHeader": true,
+        "sortBy": [{ "desc": false, "displayName": "pod" }]
+      },
+      "targets": [
+        {
+          "expr": "max_over_time(sum(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container_name!=\"POD\"}[5m])) by (pod, namespace)[24h])",
+          "format": "table",
+          "legendFormat": "Peak CPU (cores)"
+        },
+        {
+          "expr": "max_over_time(sum(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container_name!=\"POD\"}[5m])) by (pod, namespace)[24h]) * 1.2",
+          "format": "table",
+          "legendFormat": "Recommended CPU Requests (cores)"
+        },
+        {
+          "expr": "max_over_time(sum(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container_name!=\"POD\"}[5m])) by (pod, namespace)[24h]) * 1.5",
+          "format": "table",
+          "legendFormat": "Recommended CPU Limits (cores)"
+        },
+        {
+          "expr": "sum(kube_pod_container_resource_requests_cpu_cores{namespace=~\"$namespace\"}) by (pod, namespace)",
+          "format": "table",
+          "legendFormat": "Actual CPU Requests (cores)"
+        },
+        {
+          "expr": "sum(kube_pod_container_resource_limits_cpu_cores{namespace=~\"$namespace\"}) by (pod, namespace)",
+          "format": "table",
+          "legendFormat": "Actual CPU Limits (cores)"
+        },
+        {
+          "expr": "((sum(kube_pod_container_resource_requests_cpu_cores{namespace=~\"$namespace\"}) by (pod, namespace) < max_over_time(sum(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container_name!=\"POD\"}[5m])) by (pod, namespace)[24h]) * 1.2) or (sum(kube_pod_container_resource_limits_cpu_cores{namespace=~\"$namespace\"}) by (pod, namespace) < max_over_time(sum(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container_name!=\"POD\"}[5m])) by (pod, namespace)[24h]) * 1.5) or (sum(kube_pod_container_resource_limits_cpu_cores{namespace=~\"$namespace\"}) by (pod, namespace) > max_over_time(sum(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container_name!=\"POD\"}[5m])) by (pod, namespace)[24h]) * 1.5 * 1.5)) * 1",
+          "format": "table",
+          "legendFormat": "CPU Status"
+        },
+        {
+          "expr": "max_over_time(sum(container_memory_working_set_bytes{namespace=~\"$namespace\", container_name!=\"POD\"}) by (pod, namespace)[24h])",
+          "format": "table",
+          "legendFormat": "Peak Memory (bytes)"
+        },
+        {
+          "expr": "max_over_time(sum(container_memory_working_set_bytes{namespace=~\"$namespace\", container_name!=\"POD\"}) by (pod, namespace)[24h]) * 1.2",
+          "format": "table",
+          "legendFormat": "Recommended Memory Requests (bytes)"
+        },
+        {
+          "expr": "max_over_time(sum(container_memory_working_set_bytes{namespace=~\"$namespace\", container_name!=\"POD\"}) by (pod, namespace)[24h]) * 1.5",
+          "format": "table",
+          "legendFormat": "Recommended Memory Limits (bytes)"
+        },
+        {
+          "expr": "sum(kube_pod_container_resource_requests_memory_bytes{namespace=~\"$namespace\"}) by (pod, namespace)",
+          "format": "table",
+          "legendFormat": "Actual Memory Requests (bytes)"
+        },
+        {
+          "expr": "sum(kube_pod_container_resource_limits_memory_bytes{namespace=~\"$namespace\"}) by (pod, namespace)",
+          "format": "table",
+          "legendFormat": "Actual Memory Limits (bytes)"
+        },
+        {
+          "expr": "((sum(kube_pod_container_resource_requests_memory_bytes{namespace=~\"$namespace\"}) by (pod, namespace) < max_over_time(sum(container_memory_working_set_bytes{namespace=~\"$namespace\", container_name!=\"POD\"}) by (pod, namespace)[24h]) * 1.2) or (sum(kube_pod_container_resource_limits_memory_bytes{namespace=~\"$namespace\"}) by (pod, namespace) < max_over_time(sum(container_memory_working_set_bytes{namespace=~\"$namespace\", container_name!=\"POD\"}) by (pod, namespace)[24h]) * 1.5) or (sum(kube_pod_container_resource_limits_memory_bytes{namespace=~\"$namespace\"}) by (pod, namespace) > max_over_time(sum(container_memory_working_set_bytes{namespace=~\"$namespace\", container_name!=\"POD\"}) by (pod, namespace)[24h]) * 1.5 * 1.5)) * 1",
+          "format": "table",
+          "legendFormat": "Memory Status"
+        }
+      ],
+      "title": "Pod Resource Recommendations with Alerts",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 36,
+  "title": "Pod Resource Recommendations with Alerts",
+  "version": 1,
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": "all",
+          "value": "all"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "namespace",
+        "options": [],
+        "query": "label_values(kube_pod_info, namespace)",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  }
+}
